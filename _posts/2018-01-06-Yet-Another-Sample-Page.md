@@ -1,5 +1,5 @@
 ---
-title: Yet Another Sample Page
+title: Mi Primer post 
 published: true
 ---
 

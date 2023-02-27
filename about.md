@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About
+title: Contacto
 ---
 
-Something about me.
+Hola Soy Valente y esto se tensa que te cagas !!! I<3E
