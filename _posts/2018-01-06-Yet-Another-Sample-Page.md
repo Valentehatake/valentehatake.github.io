@@ -1,9 +1,14 @@
 ---
-title: Mi Primer post 
-published: true
+title: VulnHub-Mr.Robot
 ---
+**Zump Domingo 12 de febrero del 2023**
 
-Text can be **bold**, _italic_, ~~strikethrough~~ or `keyword`.
+`Maquina victima 192.168.1.85-VMware`.
+![imagenuno](/images/MrRobot/1.png)
+
+`Maquina atacante 192.168.153.128-ParrotOS`.
+![imagendos](/images/MrRobot/2.png)
+
 
 [Link to another page](another-page).
 
