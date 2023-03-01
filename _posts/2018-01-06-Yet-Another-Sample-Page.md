@@ -1,13 +1,13 @@
 ---
-title: VulnHub-Mr.Robot
+title: TryHackMe-BountyHacker
 ---
 **Zump Domingo 12 de febrero del 2023**
 
 `Maquina victima 192.168.1.85-VMware`.
-![imagenuno](/images/MrRobot/1.png)
+![imagenuno](/images/Bounty_Hacker/catlocks.png)
 
 `Maquina atacante 192.168.153.128-ParrotOS`.
-![imagendos](/images/MrRobot/2.png)
+![imagendos](/images/Bounty_Hacker/cattask.png)
 
 
 [Link to another page](another-page).
