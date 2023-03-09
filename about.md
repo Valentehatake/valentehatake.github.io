@@ -3,4 +3,8 @@ layout: page
 title: Contacto
 ---
 
-Hola Soy Valente y esto se tensa que te cagas !!! I<3E
+[Facebook](https://www.facebook.com/profile.php?id=100068880640631).
+[instagram](https://instagram.com/hatake_els?igshid=ZDdkNTZiNTM=).
+[twiter](@valentespiegel).
+[correo](valentespiegel@protonmail.com).
+
