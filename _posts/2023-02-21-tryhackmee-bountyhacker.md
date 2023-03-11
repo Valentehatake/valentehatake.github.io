@@ -1,129 +1,67 @@
 ---
 title: TryHackMe-BountyHacker
 ---
-**Zump Domingo 12 de febrero del 2023**
+<dt>WriteUp-CTF</dt>
+<dd>Valente2023intuicion</dd>
 
-`Maquina victima 192.168.1.85-VMware`.
-![imagenuno](/images/Bounty_Hacker/catlocks.png)
+<div style="font-size: 36px; letter-spacing: 5px; color: #B40404;">☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠</div>
 
-`Maquina atacante 192.168.153.128-ParrotOS`.
-![imagendos](/images/Bounty_Hacker/cattask.png)
+# [](#header-1)1).Estructura del entorno de trabajo... 
 
+* Maquina victima desplegada por tryhackmee 10.10.4.103.
+![imagen](/images/Bounty_Hacker/1.png)  
 
-[Link to another page](another-page).
+* Maquina atacante 192.168.1.77
+![imagen](/images/Bounty_Hacker/neofetch.png)
 
-There should be whitespace between paragraphs.
+`Para establecer la comunicacion es nesesario conectarnos a la vpn proporcionada por tryhackmee con la herramienta openvpn`
 
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+![imagen](/images/Bounty_Hacker/openvpn.png)
 
-# [](#header-1)Header 1
-
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
-
-## [](#header-2)Header 2
-
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
-
-### [](#header-3)Header 3
+<dt>OpenVPN</dt>
+<dd>software de código abierto que permite crear y gestionar conexiones VPN seguras y cifradas a través de internet.</dd>
 
 ```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
+#sudo openvpn eduardolazaro.ovpn
+
+El archivo puede incluir información como la dirección IP del servidor VPN, el protocolo de conexión, el puerto utilizado y las credenciales de autenticación necesarias para acceder al servidor. Al utilizar el comando "openvpn" con este archivo de configuración, se establecerá una conexión VPN segura y cifrada con el servidor remoto.
+```
+![imagen](/images/Bounty_Hacker/ping.png)
+
+`Por las trazas TTL=63  podemos presumir que nos estamos enfrentando a una maquina linux.`
+
+# [](#header-1)2).Descubrimiento y enumeracion de puertos con nmap... 
+
+`Realizamos un escaneo sencillo a la ip con nmap`
+
+```js
+#sudo nmap -n 10.10.60.74 -oG allports
 ```
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
+![imagen](/images/Bounty_Hacker/nmapallports.png)
+
+`Con algunos parametros diferentes de la herramienta nmap podemos llegar a profundisar mas.`
+
+```js
+#sudo nmap -sC -sV 10.10.60.74 -oG allports
+"-sC": Utiliza los scripts de Nmap más comunes para buscar vulnerabilidades en los servicios que se encuentran en los puertos abiertos.
+"-sV": Detecta la versión de los servicios que se ejecutan en los puertos abiertos.
+"-oG allports": Genera una salida en formato "grepable" que se puede utilizar para filtrar los resultados y extraer información específica.
+```
+![imagen](/images/Bounty_Hacker/nmaptargeted.png)
+
+`Esto nos arrojo la siguiente informacion`
+
+<dt>ftp-anon: Anonymous FTP login allowed (FTP code 230)</dt>
+<dd>La conexión anónima es un tipo de autenticación que permite acceder a  un servidor FTP sin proporcionar un nombre de usuario y una contraseña.  En lugar de ello, el cliente se conecta con un nombre de usuario y una  contraseña predeterminados, comúnmente Anonymous. </dd>
+
+```js
+#{ftp 10.10.60.74} {Anonymous}
 ```
 
-#### [](#header-4)Header 4
-
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-
-##### [](#header-5)Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-###### [](#header-6)Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![](https://guides.github.com/activities/hello-world/branching.png)
+`login exitoso.`
 
 
-### Definition lists can be used with HTML syntax.
 
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
 
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
 
-```
-The final element.
-```
