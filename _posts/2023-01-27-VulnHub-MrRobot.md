@@ -70,7 +70,7 @@ En este caso identificar la direccion ip que esta utilizando nuestra victima.
 <div style="font-size: 36px; letter-spacing: 5px; color: #B40404;">☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮</div>
 
 <div style="font-size: 36px; letter-spacing: 5px; color: #B40404;">☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠</div>
-# [](#header-1)3).Ataque de fuerza bruta con diccionarios 
+# [](#header-1)3).Ataques de fuerza bruta con diccionarios 
 <dt>GoBuster</dt>
  
 <dd>Herramienta de línea de comandos desarrollada en Go que se utiliza para encontrar
