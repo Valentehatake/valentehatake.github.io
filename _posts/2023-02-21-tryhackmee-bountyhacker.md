@@ -153,6 +153,32 @@ RedDr4gonSynd1vat3
 
 - Flag_User.txt THM{CR1m3_SyNd1C4T3} 
 
+<div style="font-size: 36px; letter-spacing: 5px; color: #B40404;">☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮☮</div>
+
+<div style="font-size: 36px; letter-spacing: 5px; color: #B40404;">☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠</div>
+
+# [](#header-1)4).Root 
+
+```js
+#sudo -l
+
+La opción "-l" o "--list" le permite a un usuario ver los comandos que puede ejecutar con permisos de superusuario o de otro usuario específico, según la configuración establecida en el archivo de configuración de sudo (/etc/sudoers).
+El resultado de "sudo -l" muestra una lista de los comandos que el usuario puede ejecutar con el comando "sudo", así como las restricciones y opciones de configuración específicas que se aplican a esos comandos.
+```
+
+```js
+#Matching Defaults entries for lin on bountyhacker : env_reset, mail_dabpass, secure_path=/usr/local/sbin
+
+Este mensaje indica que se han configurado algunas opciones de seguridad predeterminadas para el usuario "lin" en el sistema "bountyhacker". Las opciones configuradas son:
+
+"env_reset": esto significa que las variables de entorno del usuario se establecerán en un valor predeterminado seguro cuando se inicie una nueva sesión.
+"mail_dabpass": esto significa que si el usuario intenta acceder a un archivo que no tiene permiso para acceder, se enviará una notificación por correo electrónico al administrador del sistema.
+"secure_path=/usr/local/sbin": esto establece la ruta segura predeterminada para los comandos del sistema que puede ejecutar el usuario "lin". Esta opción limita las posibilidades de que el usuario ejecute comandos maliciosos o dañinos.
+
+En general, estas opciones son medidas de seguridad recomendadas para limitar los riesgos de seguridad en un sistema.
+
+```
+
 ![imagen](/images/Bounty_Hacker/roottxt.png)
 
 ```js
